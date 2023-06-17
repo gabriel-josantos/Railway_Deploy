@@ -32,7 +32,6 @@ public class UserController : ControllerBase
     //<response code="400">Retorna a resposta com erro.</response>
     //<returns></returns>
     [HttpPost]
-
     public async Task CreateUser([FromBody] SignupDto signupDto)
     {
 

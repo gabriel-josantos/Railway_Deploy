@@ -2,6 +2,7 @@ using AutoMapper;
 using DesafioMxM.Domain;
 using DesafioMxM.Repositories;
 using DesafioMxM.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Proxies;
 
@@ -83,5 +84,13 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationContext>();
+    context.Database.Migrate();
+
+}
 
 app.Run();
