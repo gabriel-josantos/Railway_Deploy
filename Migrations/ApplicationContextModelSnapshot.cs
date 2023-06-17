@@ -71,11 +71,11 @@ namespace DesafioMxM.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("LegalId")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -83,7 +83,7 @@ namespace DesafioMxM.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -91,18 +91,25 @@ namespace DesafioMxM.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("LegalId")
+                        .IsUnique();
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("DesafioMxM.Domain.Models.Address", b =>
                 {
-                    b.HasOne("DesafioMxM.Domain.Models.User", "User")
+                    b.HasOne("DesafioMxM.Domain.Models.User", null)
                         .WithOne("Address")
                         .HasForeignKey("DesafioMxM.Domain.Models.Address", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DesafioMxM.Domain.Models.User", b =>

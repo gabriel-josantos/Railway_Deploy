@@ -8,17 +8,17 @@ using Microsoft.EntityFrameworkCore.Proxies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var mySqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
-var mySqlDatabase = Environment.GetEnvironmentVariable("MYSQLDATABASE");
-var mySqlHost = Environment.GetEnvironmentVariable("MYSQLHOST");
-var mySqlPassword = Environment.GetEnvironmentVariable("MYSQLPASSWORD");
-var mySqlPort = Environment.GetEnvironmentVariable("MYSQLPORT");
-var mySqlUser = Environment.GetEnvironmentVariable("MYSQLUSER");
+//var mySqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
+//var mySqlDatabase = Environment.GetEnvironmentVariable("MYSQLDATABASE");
+//var mySqlHost = Environment.GetEnvironmentVariable("MYSQLHOST");
+//var mySqlPassword = Environment.GetEnvironmentVariable("MYSQLPASSWORD");
+//var mySqlPort = Environment.GetEnvironmentVariable("MYSQLPORT");
+//var mySqlUser = Environment.GetEnvironmentVariable("MYSQLUSER");
 
-//var connectionString = builder.Configuration.GetConnectionString("MxMChallengeConnection");
-
-var connectionString = $"Server={mySqlHost};Port={mySqlPort};Database={mySqlDatabase};User Id={mySqlUser};Password={mySqlPassword};";
+//var connectionString = $"Server={mySqlHost};Port={mySqlPort};Database={mySqlDatabase};User Id={mySqlUser};Password={mySqlPassword};";
 //var connectionString = $"Server=localhost;Database=new2;User=root;Password=digimon3;";
+
+var connectionString = builder.Configuration.GetConnectionString("MxMChallengeConnection");
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
 options
@@ -85,12 +85,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationContext>();
-    context.Database.Migrate();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var context = services.GetRequiredService<ApplicationContext>();
+//    context.Database.Migrate();
 
-}
+//}
 
 app.Run();
