@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var mySqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
 var mySqlDatabase = Environment.GetEnvironmentVariable("MYSQLDATABASE");
-var mySqlHost = "0.0.0.0";
+var mySqlHost = Environment.GetEnvironmentVariable("MYSQLHOST");
 var mySqlPassword = Environment.GetEnvironmentVariable("MYSQLPASSWORD");
 var mySqlPort = Environment.GetEnvironmentVariable("MYSQLPORT");
 var mySqlUser = Environment.GetEnvironmentVariable("MYSQLUSER");
