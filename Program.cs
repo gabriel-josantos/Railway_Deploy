@@ -36,11 +36,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
-builder.WebHost.ConfigureKestrel((context, options) =>
-{
-    options.ListenAnyIP(int.Parse(Environment.GetEnvironmentVariable("PORT"))); // Porta configurada aqui
-});
-
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000"; // Valor padrão da porta 5000 caso a variável de ambiente não esteja definida
+builder.WebHost.UseUrls("http://0.0.0.0:" + port);
 // Add services to the container.
 
 builder.Services.AddControllers();
