@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Proxies;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,9 +36,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
-builder.Services.ConfigureKestrel(options =>
+builder.WebHost.ConfigureKestrel((context, options) =>
 {
-    options.Listen(IPAddress.Any, 3000); // Porta configurada aqui
+    options.ListenAnyIP(3000); // Porta configurada aqui
 });
 
 // Add services to the container.
