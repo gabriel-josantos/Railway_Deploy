@@ -2,23 +2,25 @@ using AutoMapper;
 using DesafioMxM.Domain;
 using DesafioMxM.Repositories;
 using DesafioMxM.Repositories.Interfaces;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Proxies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var mySqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
-//var mySqlDatabase = Environment.GetEnvironmentVariable("MYSQLDATABASE");
-//var mySqlHost = Environment.GetEnvironmentVariable("MYSQLHOST");
-//var mySqlPassword = Environment.GetEnvironmentVariable("MYSQLPASSWORD");
-//var mySqlPort = Environment.GetEnvironmentVariable("MYSQLPORT");
-//var mySqlUser = Environment.GetEnvironmentVariable("MYSQLUSER");
+var mySqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
+var mySqlDatabase = Environment.GetEnvironmentVariable("MYSQLDATABASE");
+var mySqlHost = Environment.GetEnvironmentVariable("MYSQLHOST");
+var mySqlPassword = Environment.GetEnvironmentVariable("MYSQLPASSWORD");
+var mySqlPort = Environment.GetEnvironmentVariable("MYSQLPORT");
+var mySqlUser = Environment.GetEnvironmentVariable("MYSQLUSER");
 
-//var connectionString = $"Server={mySqlHost};Port={mySqlPort};Database={mySqlDatabase};User Id={mySqlUser};Password={mySqlPassword};";
-//var connectionString = $"Server=localhost;Database=new2;User=root;Password=digimon3;";
+var connectionString = $"Server={mySqlHost};Port={mySqlPort};Database={mySqlDatabase};User Id={mySqlUser};Password={mySqlPassword};";
 
-var connectionString = builder.Configuration.GetConnectionString("MxMChallengeConnection");
+
+//var connectionString = builder.Configuration.GetConnectionString("MxMChallengeConnection");
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
 options
@@ -33,7 +35,10 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
-
+builder.Services.ConfigureKestrel(options =>
+{
+    options.Listen(IPAddress.Any, 3000); // Porta configurada aqui
+});
 
 // Add services to the container.
 
@@ -62,22 +67,6 @@ if (app.Environment.IsDevelopment())
 }
 
 
-//app.Use(async (context, next) =>
-//{
-//    if (context.Request.Method == "OPTIONS")
-//    {
-//        context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-//        context.Response.Headers.Add("Access-Control-Allow-Headers", "*");
-//        context.Response.Headers.Add("Access-Control-Allow-Methods", "*");
-//        context.Response.StatusCode = 200;
-//    }
-//    else
-//    {
-//        await next();
-//    }
-
-//});
-
 app.UseCors("AllowAnyOrigin");
 app.UseHttpsRedirection();
 
@@ -85,12 +74,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var context = services.GetRequiredService<ApplicationContext>();
-//    context.Database.Migrate();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationContext>();
+    context.Database.Migrate();
 
-//}
+}
 
 app.Run();
