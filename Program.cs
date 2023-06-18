@@ -38,7 +38,7 @@ builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
 builder.WebHost.ConfigureKestrel((context, options) =>
 {
-    options.ListenAnyIP(3000); // Porta configurada aqui
+    options.ListenAnyIP(int.Parse(Environment.GetEnvironmentVariable("PORT"))); // Porta configurada aqui
 });
 
 // Add services to the container.
